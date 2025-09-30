@@ -1,20 +1,24 @@
+"use client";
 // import { LogoIcon } from '@/components/logo'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import Google from "@/components/buttons/oauth/google";
-import { useAuth } from "@hooks/use-auth";
+// import Google from "@/components/buttons/oauth/google";
+// import { useAuth } from "@hooks/use-auth";
 export default function LoginPage() {
   const { signInForm, handleSignIn, isLoading } = useAuth();
   const {
-    register, 
+    register,
     handleSubmit,
     formState: { errors },
   } = signInForm;
   return (
     <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
       <form
+        onSubmit={handleSubmit(handleSignIn)}
         action=""
         className="bg-card m-auto h-fit w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]"
       >
@@ -85,7 +89,17 @@ export default function LoginPage() {
               <Label htmlFor="email" className="block text-sm">
                 Username
               </Label>
-              <Input type="email" required name="email" id="email" />
+              <Input
+                type="email"
+                {...register("email")}
+                className={errors.email ? "border-destructive" : ""}
+                id="email"
+              />
+              {errors.email && (
+                <p className="text-xs text-destructive">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-0.5">
@@ -104,14 +118,30 @@ export default function LoginPage() {
               </div>
               <Input
                 type="password"
-                required
-                name="pwd"
-                id="pwd"
-                className="input sz-md variant-mixed"
+                {...register("password")}
+                id="password"
+                className={errors.password ? "border-destructive" : ""}
               />
+              {errors.password && (
+                <p className="text-xs text-destructive">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
-
-            <Button className="w-full">Sign In</Button>
+            {errors.root && (
+              <p className="text-xs text-destructive text-center">
+                {errors.root.message}
+              </p>
+            )}
+            <Button disabled={isLoading} type="submit" className="w-full">
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 animate-spin" />
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </Button>
           </div>
         </div>
 

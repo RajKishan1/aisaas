@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/theme/provider";
 import { Toaster } from "sonner";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-import { ConvexAuthNextjsProvider } from "@convex-dev/auth/nextjs";
 import { ConvexClientProvider } from "@/convex/provider";
 
 const geistSans = Geist({
