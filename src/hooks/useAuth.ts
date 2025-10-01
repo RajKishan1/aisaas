@@ -74,7 +74,7 @@ export const useAuth = () => {
         email: data.email,
         password: data.password,
         name: `${data.firstname} ${data.lastname}`,
-        flow: "signUpf",
+        flow: "signUp",
       });
       router.push("/dashboard");
     } catch (error) {
