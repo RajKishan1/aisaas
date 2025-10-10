@@ -1,5 +1,5 @@
 "use client";
-import Google from "@/components/oauth/Google";
+import Google from "@/components/buttons/oauth/Google";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

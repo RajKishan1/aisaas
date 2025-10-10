@@ -9,6 +9,8 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
+import { useAppSelector } from "@/app/redux/store";
+import CreateProject from "../buttons/project";
 
 type TabProps = {
   label: string;
@@ -16,10 +18,11 @@ type TabProps = {
   icon?: React.ReactNode;
 };
 const Navbar = () => {
-  const pathname = usePathname();
   const params = useSearchParams();
   const projectId = params.get("project");
+  const pathname = usePathname();
 
+  const me = useAppSelector((state) => state.profile);
   const tabs: TabProps[] = [
     {
       label: "Canvas",
@@ -46,7 +49,7 @@ const Navbar = () => {
     <div className="grid grid-cols-2 lg:grid-cols-3 p-6 fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center gap-4">
         <Link
-          href={"/dashboard/"}
+          href={`/dashboard/${me.name}`}
           className="w-8 h-8 rounded-full border-3 border-white bg-black flex items-center justify-center"
         >
           <div className="w-4 h-4 rounded-full bg-white"></div>
@@ -99,11 +102,12 @@ border-white/[0.12] saturate-150 "
           <CircleQuestionMark className="size-5 text-white" />
         </Button>
         <Avatar className="">
-          <AvatarImage />
+          <AvatarImage src={me.image || ""} />
           <AvatarFallback>
-            <User className="size-5" />
+            <User className="size-5 text-black" />
           </AvatarFallback>
         </Avatar>
+        {!hasCanvas && !hasStyleGuide && <CreateProject />}
       </div>
     </div>
   );
