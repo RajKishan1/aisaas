@@ -31,5 +31,46 @@ export const createProject = mutation({
   handler: async (ctx, { userId, name, sketchesData, thumbnail }) => {
     console.log("[Convex] Creating project for user:", userId);
     const projectNumber = await getNextProjectNumber(ctx, userId);
+    const projectName = name || `project ${projectNumber}`;
+    const projectId = await ctx.db.insert("projects", {
+      userId,
+      name: projectName,
+      sketchesData,
+      thumbnail,
+      projectNumber,
+      lastModified: Date.now(),
+      createdAt: Date.now(),
+      isPublic: false,
+    });
+    console.log("[Convex] Project created:", {
+      projectId,
+      name: projectName,
+      projectNumber,
+    });
+    return {
+      projectId,
+      name: projectName,
+      projectNumber,
+    };
   },
 });
+
+async function getNextProjectNumber(ctx: any, userId: string): Promise<number> {
+  const counter = await ctx.db
+    .query("project_counters")
+    //_eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .withIndex("by_userId", (q: any) => q.eq("userId", userId))
+    .first();
+  if (!counter) {
+    // Create new counter starting at 1
+    await ctx.db.insert("project_counters", { userId, nextProjectNumber: 2 });
+
+    return 1;
+  }
+
+  const projectNumber = counter.nextProjectNumber;
+  await ctx.db.patch(counter._id, {
+    nextProjectNumber: projectNumber + 1,
+  });
+  return projectNumber;
+}

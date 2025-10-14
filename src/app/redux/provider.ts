@@ -1,8 +1,26 @@
+// "use client";
+// import React, {ReactNode, useRef } from "react";
+// import { makeStore, store } from "./store";
+// import { RootState } from "./store";
+// import { Provider } from "react-redux";
+// const ReduxProvider = ({
+//   children,
+//   preloadedState,
+// }: {
+//   children: ReactNode;
+//   preloadedState?: Partial<RootState>;
+// }) => {
+// const storeRef = useRef(makeStore(preloadedState));
+// return <Provider store = {storeRef.current}> {children}</Provider>}
+// export default ReduxProvider;
+
 "use client";
 import React, { ReactNode, useRef } from "react";
-import { makeStore, store } from "./store";
+import { makeStore } from "./store"; 
+
 import { RootState } from "./store";
 import { Provider } from "react-redux";
+
 const ReduxProvider = ({
   children,
   preloadedState,
@@ -10,6 +28,10 @@ const ReduxProvider = ({
   children: ReactNode;
   preloadedState?: Partial<RootState>;
 }) => {
-const storeRef = useRef(makeStore(preloadedState));
-return <Provider store = {storeRef.current}> {children}</Provider>}
+  const storeRef = useRef(makeStore(preloadedState));
+
+  return <Provider store={storeRef.current}>{children}</Provider>;
+};
+
 export default ReduxProvider;
+

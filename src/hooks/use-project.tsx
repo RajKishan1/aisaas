@@ -1,9 +1,15 @@
 "use client";
-import { createProjectStart } from "@/app/redux/slices/projects";
+import {
+  addProject,
+  createProjectFailure,
+  createProjectStart,
+  createProjectSuccess,
+} from "@/app/redux/slices/projects";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
 import { fetchMutation } from "convex/nextjs";
+import { Id } from "../../convex/_generated/dataModel";
 
 const generateGradientThumbnail = () => {
   const gradients = [
@@ -39,8 +45,9 @@ export const useProjectCreation = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.profile);
   const projectState = useAppSelector((state) => state.projects);
+  const shapeState = useAppSelector((state) => state.shapes);
 
-  const createProject = async () => {
+  const createProject = async (name?: string) => {
     if (!user?.id) {
       toast.error("Please sign in to create projects");
       return;
@@ -48,6 +55,7 @@ export const useProjectCreation = () => {
     dispatch(createProjectStart());
     try {
       const thumbnail = generateGradientThumbnail();
+
       const result = await fetchMutation(api.projects.createProject, {
         userId: user.id as Id<"users">,
         name: name || undefined,
@@ -59,9 +67,27 @@ export const useProjectCreation = () => {
         },
         thumbnail,
       });
-    } catch (error) {}
+
+      dispatch(
+        addProject({
+          _id: result.projectId,
+          name: result.name,
+          projectNumber: result.projectNumber,
+          thumbnail,
+          lastModified: Date.now(),
+          createdAt: Date.now(),
+          isPublic: false,
+        })
+      );
+      dispatch(createProjectSuccess());
+      toast.success("Project created successfully!");
+    } catch (error) {
+      dispatch(createProjectFailure("Failed to create project"));
+      toast.error("Failed to create project");
+    }
   };
   return {
+    createProject,
     isCreating: projectState?.isCreating,
     projects: projectState?.projects,
     projectsTotal: projectState?.total,

@@ -1,21 +1,26 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { useProjectCreation } from '@/hooks/use-project'
+import { Loader2, PlusIcon } from 'lucide-react'
 
-type Props = {}
+const CreateProject = () => {
+  const { createProject, isCreating, canCreate } = useProjectCreation()
 
-const CreateProject = (props: Props) => {
-  const {CreateProject, isCreating, canCreate} = useProjectCreation()   
-  return  (  
-     <Button variant="default" onClick={()=>CreateProject()}
-    disabled={!canCreate || isCreating} className="flex items-center gap-2 cursor-pointer rounded-full">
-    {isCreating ? (
-      <Loader2 className="h-4 w-4 animate-spin" />
-    ): ( <PlusIcon className="h-4 w-4 "/> ) }
-    {isCreating ? 'Creating...':"New Project"}
+  return (
+    <Button
+      variant="default"
+      onClick={() => createProject()}
+      disabled={!canCreate || isCreating}
+      className="flex items-center gap-2 cursor-pointer rounded-full"
+    >
+      {isCreating ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <PlusIcon className="h-4 w-4" />
+      )}
+      {isCreating ? 'Creating...' : 'New Project'}
     </Button>
-)
+  )
 }
-
 
 export default CreateProject
