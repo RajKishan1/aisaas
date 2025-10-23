@@ -5,11 +5,10 @@ import Link from "next/link";
 import Button from "../ui/button";
 import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
-import { useAppSelector } from "@/app/redux/store";
+import { useAppSelector } from "@/redux/store";
 import CreateProject from "../buttons/project";
 
 type TabProps = {
@@ -23,6 +22,8 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const me = useAppSelector((state) => state.profile);
+
+  
   const tabs: TabProps[] = [
     {
       label: "Canvas",

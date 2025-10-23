@@ -12,7 +12,7 @@ import {
   Middleware,
   ReducersMapObject,
 } from "@reduxjs/toolkit";
-import { slices } from "./slice";
+import { slices } from "./slices";
 import { apis } from "./api";
 import middleware from "@/middleware";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";

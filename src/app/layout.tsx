@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/theme/provider";
 import { Toaster } from "sonner";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { ConvexClientProvider } from "@/convex/provider";
-import ReduxProvider from "./redux/provider";
+import ReduxProvider from "../redux/provider";
 import { ConvexUserRaw, normalizeProfile } from "@/types/user";
 import { ProfileQuery } from "@/convex/query.config";
 

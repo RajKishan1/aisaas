@@ -240,8 +240,8 @@
 //     restoreViewport,
 // }= viewportSlice.actions
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { createSlice, PayloadAction, EntityState } from "@reduxjs/toolkit";
+import type { Point } from "."; 
 export interface Point {
   x: number;
   y: number;

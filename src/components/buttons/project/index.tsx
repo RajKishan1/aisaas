@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/button'
 import { useProjectCreation } from '@/hooks/use-project'
 import { Loader2, PlusIcon } from 'lucide-react'
 

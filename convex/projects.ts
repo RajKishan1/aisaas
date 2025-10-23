@@ -27,7 +27,6 @@ export const createProject = mutation({
     sketchesData: v.any(),
     thumbnail: v.optional(v.string()),
   },
-
   handler: async (ctx, { userId, name, sketchesData, thumbnail }) => {
     console.log("[Convex] Creating project for user:", userId);
     const projectNumber = await getNextProjectNumber(ctx, userId);
@@ -74,3 +73,37 @@ async function getNextProjectNumber(ctx: any, userId: string): Promise<number> {
   });
   return projectNumber;
 }
+export const getUserProjects = query({
+  args: {
+    userId: v.id("users"),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, { userId, limit = 20 }) => {
+    const allProjects = await ctx.db
+      .query("projects")
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .order("desc")
+      .collect();
+
+    const projects = allProjects.slice(0, limit);
+
+    return projects.map((project) => ({
+      _id: project._id,
+      name: project.name,
+      projectNumber: project.projectNumber,
+      thumbnail: project.thumbnail,
+      lastModified: project.lastModified,
+      createdAt: project.createdAt,
+      isPublic: project.isPublic,
+    }));
+  },
+});
+
+export const getProjectStyleGuide = query({
+  args: { projectId: v.id("projects") },
+  handler: async (ctx, { projectId }) => {
+    const project = await ctx.db.get(projectId);
+    if (!project) throw new Error("Project not found");
+    return project.styleGuide ?? null;
+  },
+});

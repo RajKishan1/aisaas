@@ -4,8 +4,8 @@ import {
   createProjectFailure,
   createProjectStart,
   createProjectSuccess,
-} from "@/app/redux/slices/projects";
-import { useAppDispatch, useAppSelector } from "@/app/redux/store";
+} from "@/redux/slices/projects";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
 import { fetchMutation } from "convex/nextjs";
@@ -43,9 +43,9 @@ const generateGradientThumbnail = () => {
 
 export const useProjectCreation = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.profile);
-  const projectState = useAppSelector((state) => state.projects);
-  const shapeState = useAppSelector((state) => state.shapes);
+  const user = useAppSelector((state: any) => state.profile);
+  const projectState = useAppSelector((state: any) => state.projects);
+  const shapeState = useAppSelector((state: any) => state.shapes);
 
   const createProject = async (name?: string) => {
     if (!user?.id) {
@@ -60,10 +60,10 @@ export const useProjectCreation = () => {
         userId: user.id as Id<"users">,
         name: name || undefined,
         sketchesData: {
-          shapes: shapesState.shapes,
-          tool: shapesState.tool,
-          selected: shapesState.selected,
-          frameCounter: shapesState.frameCounter,
+          shapes: shapeState.shapes,
+          tool: shapeState.tool,
+          selected: shapeState.selected,
+          frameCounter: shapeState.frameCounter,
         },
         thumbnail,
       });
@@ -75,7 +75,7 @@ export const useProjectCreation = () => {
           projectNumber: result.projectNumber,
           thumbnail,
           lastModified: Date.now(),
-          createdAt: Date.now(),
+          createdAt: Date.now().toString(),
           isPublic: false,
         })
       );

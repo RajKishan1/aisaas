@@ -9,3 +9,4 @@ export const slices: Record<string, Reducer> = {
   shapes,
   viewport,
 };
+ 

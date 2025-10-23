@@ -1,12 +1,13 @@
+import Button from "@/components/ui/button";
 import { useAuthActions } from "@convex-dev/auth/react";
 import React from "react";
 
 const Google = () => {
   const { signIn } = useAuthActions();
   return (
-    <button
+    <Button
       onClick={() => {
-        void signIn("Google");
+        void signIn("google");
       }}
       type="button"
       className="flex gap-2"
@@ -36,7 +37,7 @@ const Google = () => {
         ></path>
       </svg>
       <p className="font-semibold">Google</p>
-    </button>
+    </Button>
   );
 };
 
