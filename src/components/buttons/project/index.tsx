@@ -5,7 +5,6 @@ import { Loader2, PlusIcon } from 'lucide-react'
 
 const CreateProject = () => {
   const { createProject, isCreating, canCreate } = useProjectCreation()
-
   return (
     <Button
       variant="default"
@@ -22,5 +21,7 @@ const CreateProject = () => {
     </Button>
   )
 }
+
+
 
 export default CreateProject
